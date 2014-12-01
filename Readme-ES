@@ -1,0 +1,26 @@
+Control Remoto IR Pyduino 
+
+Es una aplicación que combina la genialidad de:
+python, arduino y señal de infrarrojos para controlar
+cualquier dispositivo que utiliza este tipo de tecnología
+logrado a través de una interfaz de usuario.
+
+Este programa se ha desarrollado principalmente en fedora 20 para la verificación de los puertos HDMI de la TV Haier.
+Es por esta razón por la que sólo resuelve algunos casos de uso.
+
+Cabe mencionar que se han utilizado los siguietes modulos:
+
+pySerial - Para la comunicación con Arduino
+PyQt4 - Para la Interfaz Gráfica de Usuario
+
+La biblioteca en C para el envio y recpción de códigos IR
+Arduino-IRremote-master
+
+
+El objetivo principal es la construcción de un gran repositorio con
+códigos de diferentes dispositivos que utilizan la señal de infrarrojos.
+
+Todavía un largo camino por recorrer.
+
+E-mail: NioxDev@gmail.com
+Twitter: @NioxDigerati
