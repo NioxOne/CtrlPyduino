@@ -11,6 +11,16 @@
 #define chDown   0x20DF807F
 #define volUp     0x20DF40BF
 #define volDown   0x20DFC03F
+#define uno  0x20DF8877
+#define dos  0x20DF48B7
+#define tres  0x20DFC837
+#define cuatro 0x20DF28D7
+#define cinco  0x20DFA857
+#define seis  0x20DF6897
+#define siete  0x20DFE817
+#define ocho  0x20DF18E7
+#define nueve 0x20DF9867
+#define cero 0x20DF08F7
 
 IRsend irenviar;
 int indicadorA = 2;
@@ -33,11 +43,13 @@ void loop() {
     switch(opcion)
 	{
 	
-		case '1':
+		case 's':
 			probarHDMI();
+                        cargando();
 		break;	
-		case '2':
+		case 'r':
 			regresoHDMI();
+                        cargando();
 		break;	
 		case 'p':
                         digitalWrite(indicadorB, HIGH);
@@ -51,7 +63,7 @@ void loop() {
 			paso(ok,indicadorA);
 		break;	
 		case 'u':
-			paso(up,indicadorB);
+			paso(up,indicadorA);
 		break;		
 		case 'd':
 			paso(down,indicadorB);
@@ -69,7 +81,38 @@ void loop() {
 			paso(volDown,indicadorB);
 		break;
     		case 'i':
-			paso(input,indicadorB);
+			paso(input,indicadorA);
+		break;
+
+                case '1':
+			paso(uno,indicadorB);
+		break;		
+		case '2':
+			paso(dos,indicadorA);
+		break;	
+		case '3':
+			paso(tres,indicadorB);
+		break;		
+		case '4':
+			paso(cuatro,indicadorA);
+		break;
+    		case '5':
+			paso(cinco,indicadorB);
+		break;
+		case '6':
+			paso(seis,indicadorA);
+		break;	
+		case '7':
+			paso(siete,indicadorB);
+		break;		
+		case '8':
+			paso(ocho,indicadorA);
+		break;
+    		case '9':
+			paso(nueve,indicadorB);
+		break;
+                case '0':
+			paso(cero,indicadorA);
 		break;
 	}
    }
@@ -101,4 +144,12 @@ void regresoHDMI(){
      paso(up,indicadorB);
      //ok
      paso(ok,indicadorB);
+}
+
+void cargando(){
+  digitalWrite(indicadorA,HIGH);
+  digitalWrite(indicadorB,HIGH);
+  delay(4000);
+  digitalWrite(indicadorA,LOW);
+  digitalWrite(indicadorB,LOW);
 }

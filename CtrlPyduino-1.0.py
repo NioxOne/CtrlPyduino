@@ -28,7 +28,7 @@ from PyQt4 import QtGui
 
 if sys.platform.startswith('linux'):
 	puerto = "/dev/ttyACM0"
-	ruta = "/home/NIOX/Documentos/HDMI_HAIER/Videos"
+	ruta = os.getcwd()+"/Videos"
 elif sys.platform.startswith('win'):
 	puerto = "COM3"
 
@@ -48,6 +48,8 @@ class Verificador(QtGui.QWidget):
 		self.resize(400,300)
 		self.setGeometry(300,300, 400,400)
 		self.setWindowTitle("Verificador HDMI 1.0")
+		self.etiqueta = QtGui.QLabel("Normal",self)
+
 		#Botones
 		btn1 = QtGui.QPushButton("Siguiente")
 		btn2 = QtGui.QPushButton("Atras") 
@@ -66,19 +68,6 @@ class Verificador(QtGui.QWidget):
 		btn12 = QtGui.QPushButton("Video")
 
 		#Tamaño de los botones		
-		btn1.resize(btn1.sizeHint())
-		btn2.resize(btn2.sizeHint())
-		power.resize(power.sizeHint())
-		btn3.resize(btn2.sizeHint())
-		btn4.resize(btn4.sizeHint())
-		btn5.resize(btn5.sizeHint())
-		btn6.resize(btn6.sizeHint())
-		btn7.resize(btn7.sizeHint())
-		btn8.resize(btn8.sizeHint())
-		btn9.resize(btn9.sizeHint())
-		btn10.resize(btn10.sizeHint())
-		btn11.resize(btn11.sizeHint())
-		btn12.resize(btn12.sizeHint())
 		
 		#Eventos
 		btn1.clicked.connect(self.siguiente)
@@ -103,8 +92,7 @@ class Verificador(QtGui.QWidget):
 		power.setToolTip("Enciende y Apaga la TV")
 
 		#Etiquetas
-		self.estado = QtGui.QLabel("Verificando...")
-		self.estado.hide()
+	
 		#Layout
 		gridBox = QtGui.QGridLayout(self)
 		gridBox.addWidget(power,0,0)
@@ -113,6 +101,7 @@ class Verificador(QtGui.QWidget):
 		gridBox.addWidget(btn4,0,4)
 		#Volumen
 		gridBox.addWidget(btn5,1,3)
+		gridBox.addWidget(self.etiqueta,1,2)
 		gridBox.addWidget(btn6,1,4)		
 		#Menu
 		gridBox.addWidget(btn7,2,1)
@@ -127,7 +116,7 @@ class Verificador(QtGui.QWidget):
 		#Abrir Archivo
 		gridBox.addWidget(btn12,0,2)
 
-		gridBox.addWidget(self.estado,1,0)
+		#gridBox.addWidget(self.estado,1,0)
 		self.setLayout(gridBox)
 		
 		self.show()
@@ -138,23 +127,24 @@ class Verificador(QtGui.QWidget):
 		print "Siguiente"
 	
 	def atras(self):
-		self.estado.show()
 		self.mensaje("2")
-		self.estado.hide()
 		print "Atras"
 
 	#Método para saber que rutina ejecutar
 	def mensaje(self,opcion):
+		self.etiqueta.setText("Reproduciendo...")
+		self.etiqueta.show()
+
 		if opcion == "1" or opcion == "2":
 			try:
 				ser.write(opcion)
 				#Tiempo de retardo de televisión HAIER al cambiar de HDMI
 				time.sleep(4)
-
+				self.etiqueta.setText("")
 				#Saber si se ejecuta la lista de videos predeterminada o un video en especifico
 				if self.reproduccion:
 					self.repVideos()
-
+					
 				else:
 					self.repUnVideo()
 					self.reproduccion = True
