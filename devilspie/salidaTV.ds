@@ -1,0 +1,7 @@
+(if
+ (is (application_name) "MPlayer")
+ (begin
+	 (geometry "+1400+10")  
+	 (fullscreen)
+ )
+) 
