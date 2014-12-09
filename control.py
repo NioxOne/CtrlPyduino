@@ -1,27 +1,35 @@
 #!/usr/bin/python 
 #-*-coding:utf-8-*-
-
+#control-0.1 optimizando código
 import os
 import subprocess
 import serial
 import sys
 import time
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui
 import autopy
 
 class Control(object):
 
 	def __init__(self):
+
 		if sys.platform.startswith('linux'):
 			puerto = "/dev/ttyACM0"
 			self.rutaVideo = os.getcwd()+"/Videos"
+			conexion = True
 		elif sys.platform.startswith('win'):
-			puerto = "COM3"
+			puerto = "COM3"		
+
 		self.repSerie = True
-
-		self.ser = serial.Serial(puerto,9600)	
-		
-
+		self.ser = ""
+		while self.ser == "":
+			try:
+			    self.ser = serial.Serial(puerto,9600)	
+			except:
+				self.ser = ""
+				self.noConexion()
+			  
+		    
 	#Slots
 	def siguiente(self):
 		self.mensaje("s")
@@ -37,13 +45,9 @@ class Control(object):
 	
 			self.ser.write(opcion)
 			#Tiempo de retardo de televisión HAIER al cambiar de HDMI
-			time.sleep(6)
-			#self.etiqueta.setText("")
+			time.sleep(4)
 			#Saber si se ejecuta la lista de videos predeterminada o un video en especifico
 			if self.repSerie:
-				#self.repVideos()
-				#self.repMplayer()
-				#self.repMplayerGnomeTerminal()
 				self.repMplayerCursor()
 			else:
 				self.repUnVideo()
@@ -65,95 +69,33 @@ class Control(object):
 		subprocess.call(["pkill","totem"])
 
 	#Método utilizado para reproducir una serie de videos en específico. 
-	#Aun no es un metodo General que resuelva varios casos de uso.
-	def repVideos(self):
-		os.chdir(self.rutaVideo)
-		for video in range(5):
-			video = str (video) + ".mp4"
-			print video		
-			if sys.platform.startswith('linux'):
-				subprocess.call(["xdg-open",video])
-				if video == "0.mp4":
-					#Tiempo de retardo para maximizar totem
-						time.sleep(3)
-						#subprocess.call(["wmctrl","-r",video,"-b","add,fullscreen"])
-						#subprocess.call(["wmctrl","-R",video])
-			print "Reproduciendo..."
-			#Espera dos 2s antes de cerrar totem
-			time.sleep(2)
-			if video == "4.mp4":
-				subprocess.call(["pkill","totem"])
-	
-	def repMplayer(self):
-		#os.chdir(self.rutaVideo)
-		for video in range(5):
-		    #video = "Videos/" + str (video) + ".mp4"
-		    video = os.getcwd() + "/Videos/" + str (video) + ".mp4"
-		    if sys.platform.startswith('linux'):
-			subprocess.call(['konsole','--noclose','-e','mplayer',video])
-			#subprocess.call(['konsole','--noclose','-e','mplayer','/home/niox/Documentos/CtrlPyduino/Videos/0.mp4'])
-			#subprocess.call(['konsole','--noclose','-e','mplayer',video])
-			#subprocess.call(['mplayer',video])
-			#konsole --noclose -e mplayer 0.mp4
-			time.sleep(2)
-			#subprocess.call(['pkill',"konsole"])
-			#subprocess.call(['wmctrl','-c','bash'])
-			subprocess.call(['pkill',"mplayer"])
-		for i in range(5):
-		    consola = 'mplayer – Konsole'
-		    time.sleep(1)
-		    subprocess.call(['wmctrl','-c',consola])
-	
-	def repMplayerGnomeTerminal(self):
-		os.chdir(self.rutaVideo)
-		for video in range(5):
-		    video = str (video) + ".mp4"
-		    if sys.platform.startswith('linux'):
-			#video = '"mplayer %s"' %(video)
-			video = "mplayer %s" %(video)
-			#video = "'%s'"%(video)
-			#os.chdir(self.rutaVideo)
-			#video ='"mplayer \'%s\'"'%(video)
-			subprocess.call(['gnome-terminal','-e',video])
-			#subprocess.call(['mplayer',video])
-			#konsole --noclose -e mplayer 0.mp4
-			time.sleep(2)
-			#subprocess.call(['pkill',"konsole"])
-			#subprocess.call(['wmctrl','-c','bash'])
-			subprocess.call(['pkill',"mplayer"])
-		for i in range(5):
-		    consola = 'Terminal'
-		    time.sleep(1)
-		    subprocess.call(['wmctrl','-c',consola])
-	
+	#Aun no es un metodo General que resuelva varios casos de uso.	
 	def repMplayerCursor(self):
+	  """
+	  	Se mueve el cursor para hacer la pantalla de la tv activa
+	  	Se utiliza konsole para abrir mplayer como proceso independiente
+	  	Se utiliza totem para la reproducción del sonido y mplayer para los videos
+	  	Al final se mata el proceso de konsole y totem 
+	  	Se regresa el cursor a su posición inicial
+	  """
 	  pos_actual = autopy.mouse.get_pos()
 	  autopy.mouse.move(1800,300)
 	  autopy.mouse.click(autopy.mouse.LEFT_BUTTON)
-	  m1 = os.getcwd() + "/Videos/m1.wav"
+	  m1 = os.getcwd() + "/Videos/m1.mp3"
 	  subprocess.call(['konsole','--noclose','-e','totem',m1])
-	  time.sleep(0.5)
+	  time.sleep(0.5) #Tiempo de retardo sincronización con la tv
 	  for video in range(5):
-	  	
- 	  	video = os.getcwd() + "/Videos/" + str (video) + ".mp4"
-	  	if sys.platform.startswith('linux'):
-	  		subprocess.call(['konsole','--noclose','-e','mplayer','-fs',video])
+ 	  		video = os.getcwd() + "/Videos/" + str (video) + ".mp4"
+	  		if sys.platform.startswith('linux'):
+	  			subprocess.call(['konsole','--noclose','-e','mplayer','-fs',video])
 
 			time.sleep(2)
-		subprocess.call(['pkill',"mplayer"])
-	  """	  
-	  for i in range(6):
-		  consola = 'mplayer – Konsole'
-		  time.sleep(1)
-		  subprocess.call(['wmctrl','-c',consola])
-		
-	  subprocess.call(['wmctrl','-c','CtrlPyduino: totem – Konsole'])	
-	  """
+			subprocess.call(['pkill',"mplayer"])
+
 	  subprocess.call(['pkill',"konsole"])
 	  subprocess.call(['pkill',"totem"])
 	  autopy.mouse.move(*pos_actual)
 
-	      
 	#Slot para seleccionar un video en específico y reproducirlo
 	def ruta(self):
 			os.chdir(dirActual)
@@ -245,7 +187,7 @@ class Control(object):
 		elif direccion == "0":
 			self.ser.write(direccion)
 			print "cero"
-
+		
 	#Slots
 	def power(self):
 		self.cambiar("p")
@@ -288,3 +230,15 @@ class Control(object):
 		self.cambiar("9")
 	def cero(self):
 		self.cambiar("0")
+
+	def noConexion(self):	
+		print "Arduino no Conectado"
+	  	msgBox = QtGui.QMessageBox()
+	  	msgBox.setText("Dispositivo No Conectado")
+	  	msgBox.setInformativeText("Conecte el dispositivo al puerto USB")
+	  	icono = QtGui.QMessageBox.Critical
+	  	msgBox.setIcon(icono)
+	  	iconoVentana = QtGui.QIcon("iconos/domHome.png")
+	  	msgBox.setWindowIcon(iconoVentana)
+	  	msgBox.show()
+	  	msgBox.exec_()
