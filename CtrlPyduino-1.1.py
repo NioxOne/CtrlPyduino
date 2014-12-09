@@ -4,14 +4,14 @@ import sys
 #import serial
 from PyQt4 import QtGui, QtCore
 from GUIPyduino import Ui_CtrlPyduino
-from control import Control
+from control1 import Control
 
-class CtrlPyduino1(QtGui.QWidget):
+class CtrlPyduino(QtGui.QWidget):
 
 	def __init__(self):
-		super(CtrlPyduino1, self).__init__()
+		super(CtrlPyduino, self).__init__()
 		self.initUI()
-
+		
 	def initUI(self):
 		#GUI
 		self.gui = Ui_CtrlPyduino()
@@ -40,7 +40,20 @@ class CtrlPyduino1(QtGui.QWidget):
 		self.gui.menu.clicked.connect(self.control.menu)
 		self.gui.chDown.clicked.connect(self.control.chDown)
 		self.gui.power.clicked.connect(self.control.power)
-		
+		#Teclas Rápidas
+		self.gui.siguiente.setShortcut('S')
+		self.gui.anterior.setShortcut('A')
+		self.gui.input.setShortcut('I')
+		self.gui.volUp.setShortcut('+')
+		self.gui.volDown.setShortcut('-')
+		self.gui.chUp.setShortcut("Ctrl++")
+		self.gui.chDown.setShortcut("Ctrl+-")
+		self.gui.up.setShortcut("Up")
+		self.gui.down.setShortcut("Down")
+		self.gui.ok.setShortcut("k")
+		self.gui.menu.setShortcut("m")
+		self.gui.power.setShortcut("p")
+
 		#Números
 		self.gui.uno.clicked.connect(self.control.uno)
 		self.gui.dos.clicked.connect(self.control.dos)
@@ -52,11 +65,25 @@ class CtrlPyduino1(QtGui.QWidget):
 		self.gui.ocho.clicked.connect(self.control.ocho)
 		self.gui.nueve.clicked.connect(self.control.nueve)
 		self.gui.cero.clicked.connect(self.control.cero)
+		self.showMaximized()
 		self.show()
 
+		#Teclas Rápidas
+		#Teclas Rápidas
+		self.gui.uno.setShortcut('1')
+		self.gui.dos.setShortcut('2')
+		self.gui.tres.setShortcut('3')
+		self.gui.cuatro.setShortcut('4')
+		self.gui.cinco.setShortcut('5')
+		self.gui.seis.setShortcut("6")
+		self.gui.siete.setShortcut("7")
+		self.gui.ocho.setShortcut("8")
+		self.gui.nueve.setShortcut("9")
+		self.gui.cero.setShortcut("0")
+	
 def main():
 	app = QtGui.QApplication(sys.argv);
-	control = CtrlPyduino1()
+	control = CtrlPyduino()
 	sys.exit(app.exec_())
 
 if __name__ == "__main__":
