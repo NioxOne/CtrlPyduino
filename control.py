@@ -7,6 +7,7 @@ import serial
 import sys
 import time
 from PyQt4 import QtGui, QtCore
+import autopy
 
 class Control(object):
 
@@ -36,13 +37,14 @@ class Control(object):
 	
 			self.ser.write(opcion)
 			#Tiempo de retardo de televisión HAIER al cambiar de HDMI
-			time.sleep(4)
+			time.sleep(6)
 			#self.etiqueta.setText("")
 			#Saber si se ejecuta la lista de videos predeterminada o un video en especifico
 			if self.repSerie:
 				#self.repVideos()
 				#self.repMplayer()
-				self.repMplayerGnomeTerminal()
+				#self.repMplayerGnomeTerminal()
+				self.repMplayerCursor()
 			else:
 				self.repUnVideo()
 				self.repSerie = True			
@@ -83,11 +85,14 @@ class Control(object):
 				subprocess.call(["pkill","totem"])
 	
 	def repMplayer(self):
-		os.chdir(self.rutaVideo)
+		#os.chdir(self.rutaVideo)
 		for video in range(5):
-		    video = str (video) + ".mp4"
+		    #video = "Videos/" + str (video) + ".mp4"
+		    video = os.getcwd() + "/Videos/" + str (video) + ".mp4"
 		    if sys.platform.startswith('linux'):
 			subprocess.call(['konsole','--noclose','-e','mplayer',video])
+			#subprocess.call(['konsole','--noclose','-e','mplayer','/home/niox/Documentos/CtrlPyduino/Videos/0.mp4'])
+			#subprocess.call(['konsole','--noclose','-e','mplayer',video])
 			#subprocess.call(['mplayer',video])
 			#konsole --noclose -e mplayer 0.mp4
 			time.sleep(2)
@@ -120,8 +125,35 @@ class Control(object):
 		    consola = 'Terminal'
 		    time.sleep(1)
 		    subprocess.call(['wmctrl','-c',consola])
+	
+	def repMplayerCursor(self):
+	  pos_actual = autopy.mouse.get_pos()
+	  autopy.mouse.move(1800,300)
+	  autopy.mouse.click(autopy.mouse.LEFT_BUTTON)
+	  m1 = os.getcwd() + "/Videos/m1.wav"
+	  subprocess.call(['konsole','--noclose','-e','totem',m1])
+	  time.sleep(0.5)
+	  for video in range(5):
+	  	
+ 	  	video = os.getcwd() + "/Videos/" + str (video) + ".mp4"
+	  	if sys.platform.startswith('linux'):
+	  		subprocess.call(['konsole','--noclose','-e','mplayer','-fs',video])
+
+			time.sleep(2)
+		subprocess.call(['pkill',"mplayer"])
+	  """	  
+	  for i in range(6):
+		  consola = 'mplayer – Konsole'
+		  time.sleep(1)
+		  subprocess.call(['wmctrl','-c',consola])
 		
-		
+	  subprocess.call(['wmctrl','-c','CtrlPyduino: totem – Konsole'])	
+	  """
+	  subprocess.call(['pkill',"konsole"])
+	  subprocess.call(['pkill',"totem"])
+	  autopy.mouse.move(*pos_actual)
+
+	      
 	#Slot para seleccionar un video en específico y reproducirlo
 	def ruta(self):
 			os.chdir(dirActual)
