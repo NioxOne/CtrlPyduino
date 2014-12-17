@@ -1,10 +1,24 @@
 #!/usr/bin/python 
 #-*-coding: utf-8 -*-
+"""
+	Copyright (C) <9/12/2014r> <Nicolas Lemus Plascencia>
+				 			   <NioxDev@gmail.com>
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	GNU General Public License for more details.
+	You should have received a copy of the GNU General Public License
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
+"""
 import sys
 #import serial
 from PyQt4 import QtGui, QtCore
 from GUIPyduino import Ui_CtrlPyduino
-from control1 import Control
+from control import Control
 
 class CtrlPyduino(QtGui.QWidget):
 
@@ -40,6 +54,13 @@ class CtrlPyduino(QtGui.QWidget):
 		self.gui.menu.clicked.connect(self.control.menu)
 		self.gui.chDown.clicked.connect(self.control.chDown)
 		self.gui.power.clicked.connect(self.control.power)
+
+		#Rutina Prueba HDMI
+		self.gui.pushHDMI.clicked.connect(self.rutinaProbarHDMI)
+		#Exit, Right, Left
+		self.gui.cancelar.clicked.connect(self.control.exit)
+		self.gui.left.clicked.connect(self.control.left)
+		self.gui.right.clicked.connect(self.control.right)
 		#Teclas Rápidas
 		self.gui.siguiente.setShortcut('S')
 		self.gui.anterior.setShortcut('A')
@@ -69,7 +90,6 @@ class CtrlPyduino(QtGui.QWidget):
 		self.show()
 
 		#Teclas Rápidas
-		#Teclas Rápidas
 		self.gui.uno.setShortcut('1')
 		self.gui.dos.setShortcut('2')
 		self.gui.tres.setShortcut('3')
@@ -81,6 +101,16 @@ class CtrlPyduino(QtGui.QWidget):
 		self.gui.nueve.setShortcut("9")
 		self.gui.cero.setShortcut("0")
 	
+	def rutinaProbarHDMI(self):
+		puertos = int (self.gui.lineHDMI.text())
+		for puerto in range(puertos):
+			puerto = puerto + 1
+			print puerto
+			puerto = "<center>Probando HDMI %s </center>" % str (puerto)
+			self.gui.labelHDMI2.setText(puerto)
+			self.control.siguiente()
+		self.gui.labelHDMI2.setText("")
+
 def main():
 	app = QtGui.QApplication(sys.argv);
 	control = CtrlPyduino()

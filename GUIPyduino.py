@@ -1,9 +1,8 @@
-#!/usr/bin/python 
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'GUIPyduino.ui'
 #
-# Created: Fri Dec  5 00:45:55 2014
+# Created: Tue Dec  9 16:58:10 2014
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -142,6 +141,24 @@ class Ui_CtrlPyduino(object):
         self.anterior = QtGui.QPushButton(self.horizontalLayoutWidget)
         self.anterior.setObjectName(_fromUtf8("anterior"))
         self.horLRutina.addWidget(self.anterior)
+        self.gridLayoutWidget = QtGui.QWidget(self.centralwidget)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(320, 300, 160, 91))
+        self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
+        self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout.setMargin(0)
+        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        self.pushHDMI = QtGui.QPushButton(self.gridLayoutWidget)
+        self.pushHDMI.setObjectName(_fromUtf8("pushHDMI"))
+        self.gridLayout.addWidget(self.pushHDMI, 3, 0, 1, 1)
+        self.lineHDMI = QtGui.QLineEdit(self.gridLayoutWidget)
+        self.lineHDMI.setObjectName(_fromUtf8("lineHDMI"))
+        self.gridLayout.addWidget(self.lineHDMI, 0, 0, 1, 1)
+        self.labelHDMI = QtGui.QLabel(self.gridLayoutWidget)
+        self.labelHDMI.setObjectName(_fromUtf8("labelHDMI"))
+        self.gridLayout.addWidget(self.labelHDMI, 2, 0, 1, 1)
+        self.labelHDMI2 = QtGui.QLabel(self.gridLayoutWidget)
+        self.labelHDMI2.setObjectName(_fromUtf8("labelHDMI2"))
+        self.gridLayout.addWidget(self.labelHDMI2, 4, 0, 1, 1)
         #CtrlPyduino.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(CtrlPyduino)
@@ -179,4 +196,7 @@ class Ui_CtrlPyduino(object):
         self.video.setText(_translate("CtrlPyduino", "Video", None))
         self.siguiente.setText(_translate("CtrlPyduino", "Siguiente", None))
         self.anterior.setText(_translate("CtrlPyduino", "Anterior", None))
+        self.pushHDMI.setText(_translate("CtrlPyduino", "Iniciar Prueba", None))
+        self.labelHDMI.setText(_translate("CtrlPyduino", "<html><head/><body><p align=\"center\">Puertos HDMI</p></body></html>", None))
+        self.labelHDMI2.setText(_translate("CtrlPyduino", "<html><head/><body><p align=\"center\"> </p></body></html>", None))
 

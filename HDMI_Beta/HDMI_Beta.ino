@@ -21,6 +21,11 @@
 #define ocho  0x20DF18E7
 #define nueve 0x20DF9867
 #define cero 0x20DF08F7
+#define salir 0x20DFDA25
+#define right 0x20DF609F
+#define left 0x20DFE01F
+
+
 
 IRsend irenviar;
 int indicadorA = 2;
@@ -113,7 +118,17 @@ void loop() {
 		break;
                 case '0':
 			paso(cero,indicadorA);
+		break;  
+               case 'x':
+			paso(salir,indicadorA);
 		break;
+               case 'L':
+			paso(left,indicadorB);
+		break;
+               case 'R':
+			paso(right,indicadorA);
+		break;
+    
 	}
    }
 }

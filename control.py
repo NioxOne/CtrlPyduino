@@ -71,13 +71,6 @@ class Control(object):
 	#Método utilizado para reproducir una serie de videos en específico. 
 	#Aun no es un metodo General que resuelva varios casos de uso.	
 	def repMplayerCursor(self):
-	  """
-	  	Se mueve el cursor para hacer la pantalla de la tv activa
-	  	Se utiliza konsole para abrir mplayer como proceso independiente
-	  	Se utiliza totem para la reproducción del sonido y mplayer para los videos
-	  	Al final se mata el proceso de konsole y totem 
-	  	Se regresa el cursor a su posición inicial
-	  """
 	  pos_actual = autopy.mouse.get_pos()
 	  autopy.mouse.move(1800,300)
 	  autopy.mouse.click(autopy.mouse.LEFT_BUTTON)
@@ -187,6 +180,15 @@ class Control(object):
 		elif direccion == "0":
 			self.ser.write(direccion)
 			print "cero"
+		elif direccion == "x":
+			self.ser.write(direccion)
+			print "ocho"
+		elif direccion == "L":
+			self.ser.write(direccion)
+			print "nueve"
+		elif direccion == "R":
+			self.ser.write(direccion)
+			print "cero"
 		
 	#Slots
 	def power(self):
@@ -230,6 +232,13 @@ class Control(object):
 		self.cambiar("9")
 	def cero(self):
 		self.cambiar("0")
+
+	def exit(self):
+		self.cambiar("x")
+	def right(self):
+		self.cambiar("R")
+	def left(self):
+		self.cambiar("L")
 
 	def noConexion(self):	
 		print "Arduino no Conectado"
